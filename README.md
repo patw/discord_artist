@@ -2,6 +2,8 @@
 
 A simple discord bot that can prompt Flux dev running on Fireworks.ai. 
 
+![Sample output](output.jpg)
+
 ## Local Installation
 
 Windows:
