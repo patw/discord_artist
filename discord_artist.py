@@ -2,6 +2,7 @@ import discord
 import requests
 import re
 import os
+import random
 
 # Nice way to load environment variables for deployments
 from dotenv import load_dotenv
@@ -31,7 +32,8 @@ def generate_image(prompt):
         "prompt": prompt,
         "aspect_ratio": "16:9",
         "guidance_scale": 3.5,
-        "num_inference_steps": 30
+        "num_inference_steps": 30,
+        "seed": random.randint(0,1000000) 
     }
     response = requests.post(url, headers=headers, json=data)
     if response.status_code == 200:
