@@ -1,6 +1,6 @@
 import discord
 import requests
-import re
+import io
 import os
 import random
 
@@ -15,10 +15,6 @@ FIREWORKS_API_KEY = os.environ["FIREWORKS_API_KEY"]
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-
-# Removes discord IDs from strings
-def remove_id(text):
-    return re.sub(r'<@\d+>', '', text)
 
 # Generate an image using the Flux Dev model
 def generate_image(prompt):
@@ -48,16 +44,27 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if client.user.mentioned_in(message):
-        prompt = remove_id(message.content)
-        await message.channel.send(F"Drawing {prompt}...")
+    if message.author == client.user:
+        return
+
+    if client.user.mentioned_in(message):    
+        prompt = message.clean_content.replace(f'@{client.user.name}', '').strip()
+
+        # Handle cases where the user only mentions the bot with no prompt
+        if not prompt:
+            await message.channel.send("You mentioned me! What would you like me to draw?")
+            return
+
+        # Let the user know you're working on it
+        await message.channel.send(f"Drawing `{prompt}`...")
+        
         image_data = generate_image(prompt)
+        
         if image_data:
-            with open("output.jpg", "wb") as f:
-                f.write(image_data)
-            await message.channel.send(file=discord.File("output.jpg"))
+            # Send the image back as a file
+            await message.channel.send(file=discord.File(fp=io.BytesIO(image_data), filename="output.jpg"))
         else:
-            await message.channel.send("Failed to generate the image. Please try again.")
+            await message.channel.send("Sorry, I failed to generate the image. Please try again.")
 
 # Run the main loop
 client.run(DISCORD_TOKEN)
