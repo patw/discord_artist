@@ -1,6 +1,6 @@
 # Discord Artist
 
-A simple discord bot that can prompt Flux dev running on Fireworks.ai. 
+A simple discord bot that can prompt Flux dev running on Gemini's flash-image model
 
 ![Sample output](output.jpg)
 
@@ -22,7 +22,7 @@ pip3 install -r requirements.txt
 
 * Copy sample.env to .env
 * Fill in your Bot Token (https://discord.com/developers/applications)
-* Fill in your fireworks.ai token (https://fireworks.ai)
+* Fill in your google gemini token (https://ai.google.dev/gemini-api/docs/api-key)
 * Run the following:
 
 Windows:
