@@ -25,7 +25,7 @@ client = discord.Client(intents=intents)
 def generate_image(prompt):
     try:
         response = genai_client.models.generate_content(
-            model="gemini-2.5-flash-image-preview",
+            model="gemini-3.1-flash-lite-image",
             contents=[prompt],
         )
         
